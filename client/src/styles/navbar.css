@@ -1,0 +1,48 @@
+.navbar{
+
+position:sticky;
+top:0;
+z-index:1000;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:18px 70px;
+
+background:linear-gradient(90deg,#2563eb,#7c3aed);
+
+box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+}
+
+.navbar h2{
+
+color:white;
+font-size:30px;
+font-weight:700;
+
+}
+
+.navbar div{
+
+display:flex;
+gap:35px;
+
+}
+
+.navbar a{
+
+color:white;
+font-size:17px;
+font-weight:500;
+transition:.3s;
+
+}
+
+.navbar a:hover{
+
+color:#FFD700;
+transform:translateY(-2px);
+
+}
