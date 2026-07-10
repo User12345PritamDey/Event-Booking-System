@@ -7,25 +7,36 @@ const bookingSchema = new mongoose.Schema(
         ref: 'User',
         required: true
     },
+
     eventId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Event',
         required: true
     },
+
     status: {
         type: String,
         enum: ['confirmed', 'cancelled', 'pending'],
         default: 'pending'
     },
+
     paymentStatus: {
         type: String,
         enum: ['paid', 'not_paid'],
         default: 'not_paid'
     },
+
+    paymentMethod: {
+        type: String,
+        enum: ['UPI', 'Card', 'Net Banking', 'Cash'],
+        default: 'UPI'
+    },
+
     amount: {
         type: Number,
         required: true
     },
+
     bookedAt: {
         type: Date,
         default: Date.now
