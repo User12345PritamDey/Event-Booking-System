@@ -1,0 +1,51 @@
+.my-bookings{
+padding:40px;
+background:#f5f7fb;
+min-height:100vh;
+}
+
+.my-bookings h1{
+text-align:center;
+margin-bottom:40px;
+}
+
+.booking-box{
+display:flex;
+gap:30px;
+background:white;
+padding:20px;
+margin-bottom:25px;
+border-radius:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
+align-items:center;
+}
+
+.booking-box img{
+width:220px;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.booking-box h2{
+margin-bottom:10px;
+}
+
+.booking-box p{
+margin:8px 0;
+}
+
+.booking-box button{
+margin-top:15px;
+padding:12px 25px;
+border:none;
+background:#ef4444;
+color:white;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+.booking-box button:hover{
+background:#dc2626;
+}
