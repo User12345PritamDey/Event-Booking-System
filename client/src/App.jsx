@@ -12,7 +12,7 @@ import EventDetails from "./pages/EventDetails";
 import Booking from "./pages/Booking";
 import MyBookings from "./pages/MyBookings";
 import AdminDashboard from "./pages/AdminDashboard";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 function App() {
   return (
     <>
@@ -21,14 +21,41 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
 
-        
-        <Route path="/events" element={<Events />} />
+        <Route
+  path="/events"
+  element={
+    <ProtectedRoute>
+      <Events />
+    </ProtectedRoute>
+  }
+/>
 
-        <Route path="/event/:id" element={<EventDetails />} />
+<Route
+  path="/event/:id"
+  element={
+    <ProtectedRoute>
+      <EventDetails />
+    </ProtectedRoute>
+  }
+/>
 
-        <Route path="/booking/:id" element={<Booking />} />
+<Route
+  path="/booking/:id"
+  element={
+    <ProtectedRoute>
+      <Booking />
+    </ProtectedRoute>
+  }
+/>
 
-        <Route path="/my-bookings" element={<MyBookings />} />
+<Route
+  path="/my-bookings"
+  element={
+    <ProtectedRoute>
+      <MyBookings />
+    </ProtectedRoute>
+  }
+/>
 
         <Route path="/admin" element={<AdminDashboard />} />
 

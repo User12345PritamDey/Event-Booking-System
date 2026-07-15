@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import api from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import "./VerifyOTP.css";
 
 export default function VerifyOTP() {
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { verifyOTP } = useAuth();
 
   const email = location.state?.email || "";
 
@@ -28,30 +31,31 @@ export default function VerifyOTP() {
     }
 
     try {
+
       setLoading(true);
 
-      const res = await api.post("/auth/verify-otp", {
-        email,
-        otp,
-      });
-
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data));
+      await verifyOTP(email, otp);
 
       toast.success("🎉 Account verified successfully!");
 
       navigate("/");
+
     } catch (err) {
+
       toast.error(
         err.response?.data?.message || "Invalid or Expired OTP"
       );
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
   return (
     <div className="verify-container">
+
       <div className="verify-card">
 
         <h2>Verify Your Account</h2>
@@ -72,7 +76,10 @@ export default function VerifyOTP() {
             onChange={(e) => setOtp(e.target.value)}
           />
 
-          <button type="submit" disabled={loading}>
+          <button
+            type="submit"
+            disabled={loading}
+          >
             {loading ? "Verifying..." : "Verify OTP"}
           </button>
 
@@ -83,6 +90,7 @@ export default function VerifyOTP() {
         </div>
 
       </div>
+
     </div>
   );
 }

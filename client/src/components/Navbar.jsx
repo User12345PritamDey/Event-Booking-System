@@ -18,14 +18,13 @@ function Navbar() {
 
         {user ? (
           <>
-
-            <Link to="/my-bookings">
-              My Bookings
-            </Link>
-
-            {user.role === "admin" && (
+            {user.role === "admin" ? (
               <Link to="/admin">
-                Admin
+                Admin Dashboard
+              </Link>
+            ) : (
+              <Link to="/my-bookings">
+                My Bookings
               </Link>
             )}
 
@@ -35,11 +34,9 @@ function Navbar() {
             >
               Logout
             </button>
-
           </>
         ) : (
           <>
-
             <Link to="/login">
               Login
             </Link>
@@ -47,7 +44,6 @@ function Navbar() {
             <Link to="/register">
               Register
             </Link>
-
           </>
         )}
 
