@@ -17,10 +17,19 @@ function Home() {
             Music Festivals • Tech Conferences • Workshops • Sports • Cultural
             Events
           </p>
+          <button
+  onClick={() => {
+    const token = localStorage.getItem("token");
 
-          <button onClick={() => navigate("/events")}>
-            Explore Events
-          </button>
+    if (!token) {
+      navigate("/login");
+    } else {
+      navigate("/events");
+    }
+  }}
+>
+  Explore Events
+</button>
         </div>
 
         <div className="hero-right">
