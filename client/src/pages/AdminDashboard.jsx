@@ -5,150 +5,319 @@ import "./AdminDashboard.css";
 function AdminDashboard() {
 
   const [bookings, setBookings] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const fetchData = async () => {
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("all");
+
+  const fetchBookings = async () => {
     try {
 
-      const bookingRes = await api.get("/booking/my");
-      const eventRes = await api.get("/event");
+      const res = await api.get("/booking/my");
 
-      setBookings(bookingRes.data);
-      setEvents(eventRes.data);
+      setBookings(res.data);
 
     } catch (err) {
+
       console.log(err);
+
+    } finally {
+
+      setLoading(false);
+
     }
   };
 
   useEffect(() => {
-    fetchData();
+    fetchBookings();
   }, []);
 
-  const pendingBookings = bookings.filter(
-    (b) => b.status === "pending"
-  ).length;
-
-  const confirmedBookings = bookings.filter(
-    (b) => b.status === "confirmed"
-  ).length;
   const confirmBooking = async (id) => {
 
-  try {
+    try {
 
-    await api.put(`/booking/${id}/confirm`, {
-      paymentStatus: "paid"
-    });
+      await api.put(`/booking/${id}/confirm`, {
+        paymentStatus: "paid"
+      });
 
-    alert("Booking Confirmed Successfully");
+      alert("Booking Confirmed Successfully");
 
-    fetchData();
+      fetchBookings();
 
-  } catch (err) {
+    } catch (err) {
 
-    alert(
-      err.response?.data?.message || "Something went wrong"
+      alert(
+        err.response?.data?.message || "Error confirming booking"
+      );
+
+    }
+
+  };
+
+  const cancelBooking = async (id) => {
+
+    try {
+
+      await api.delete(`/booking/${id}`);
+
+      alert("Booking Cancelled Successfully");
+
+      fetchBookings();
+
+    } catch (err) {
+
+      alert(
+        err.response?.data?.message || "Error cancelling booking"
+      );
+
+    }
+
+  };
+
+  if (loading) {
+
+    return (
+      <div className="loading">
+        Loading Dashboard...
+      </div>
     );
 
   }
 
-};
+  const pending = bookings.filter(
+    (b) => b.status === "pending"
+  ).length;
+
+  const confirmed = bookings.filter(
+    (b) => b.status === "confirmed"
+  ).length;
+
+  const cancelled = bookings.filter(
+    (b) => b.status === "cancelled"
+  ).length;
+
+  const filteredBookings = bookings.filter((booking) => {
+
+    const event =
+      booking.eventId?.title?.toLowerCase() || "";
+
+    const user =
+      booking.userId?.name?.toLowerCase() || "";
+
+    const matchesSearch =
+      event.includes(search.toLowerCase()) ||
+      user.includes(search.toLowerCase());
+
+    const matchesFilter =
+      filter === "all" ||
+      booking.status === filter;
+
+    return matchesSearch && matchesFilter;
+
+  });
 
   return (
+
     <div className="admin-page">
 
       <h1>🎉 Admin Dashboard</h1>
 
-      <div className="dashboard-cards">
+      <div className="stats">
 
-        <div className="card">
-          <h2>{events.length}</h2>
-          <p>Total Events</p>
-        </div>
-
-        <div className="card">
+        <div className="stat-card">
           <h2>{bookings.length}</h2>
           <p>Total Bookings</p>
         </div>
 
-        <div className="card">
-          <h2>{pendingBookings}</h2>
-          <p>Pending Requests</p>
+        <div className="stat-card pending">
+          <h2>{pending}</h2>
+          <p>Pending</p>
         </div>
 
-        <div className="card">
-          <h2>{confirmedBookings}</h2>
+        <div className="stat-card confirmed">
+          <h2>{confirmed}</h2>
           <p>Confirmed</p>
+        </div>
+
+        <div className="stat-card cancelled">
+          <h2>{cancelled}</h2>
+          <p>Cancelled</p>
         </div>
 
       </div>
 
       <h2 className="section-title">
+
         📋 Booking Requests
+
       </h2>
 
-      {bookings.map((booking) => (
+      <div className="admin-tools">
 
-        <div className="admin-card" key={booking._id}>
+        <input
+          type="text"
+          placeholder="🔍 Search User or Event"
+          value={search}
+          onChange={(e) =>
+            setSearch(e.target.value)
+          }
+        />
 
-          <img
-            src={booking.eventId.image}
-            alt={booking.eventId.title}
-          />
+        <select
+          value={filter}
+          onChange={(e) =>
+            setFilter(e.target.value)
+          }
+        >
 
-          <div className="admin-info">
+          <option value="all">All</option>
 
-            <h2>{booking.eventId.title}</h2>
+          <option value="pending">
+            Pending
+          </option>
 
-            <p>
-              <strong>User:</strong> {booking.userId.name}
-            </p>
+          <option value="confirmed">
+            Confirmed
+          </option>
 
-            <p>
-              <strong>Email:</strong> {booking.userId.email}
-            </p>
+          <option value="cancelled">
+            Cancelled
+          </option>
 
-            <p>
-              <strong>Payment:</strong> {booking.paymentMethod}
-            </p>
+        </select>
 
-            <p>
-              <strong>Status:</strong> {booking.status}
-            </p>
-            <p>
-  <strong>Payment Status:</strong> {booking.paymentStatus}
-</p>
+      </div>
 
-{
-  booking.status === "pending" ? (
+      <table className="booking-table">
 
-    <button
-      className="confirm-btn"
-      onClick={() => confirmBooking(booking._id)}
-    >
-      ✅ Confirm Booking
-    </button>
+        <thead>
 
-  ) : (
+          <tr>
 
-    <button
-      className="confirmed-btn"
-      disabled
-    >
-      ✔ Confirmed
-    </button>
+            <th>Event</th>
 
-  )
-}
+            <th>User</th>
 
-          </div>
+            <th>Email</th>
 
-        </div>
+            <th>Payment</th>
 
-      ))}
+            <th>Amount</th>
+
+            <th>Status</th>
+
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          {filteredBookings.length === 0 ? (
+
+            <tr>
+
+              <td colSpan="7">
+
+                No Booking Requests
+
+              </td>
+
+            </tr>
+
+          ) : (
+
+            filteredBookings.map((booking) => (
+
+              <tr key={booking._id}>
+
+                <td>
+                  {booking.eventId?.title}
+                </td>
+
+                <td>
+                  {booking.userId?.name}
+                </td>
+
+                <td>
+                  {booking.userId?.email}
+                </td>
+
+                <td>
+                  {booking.paymentMethod}
+                </td>
+
+                <td>
+                  ₹ {booking.amount}
+                </td>
+
+                <td>
+
+                  <span
+                    className={`status ${booking.status}`}
+                  >
+
+                    {booking.status}
+
+                  </span>
+
+                </td>
+
+                <td>
+
+                  {booking.status === "pending" ? (
+
+                    <>
+
+                      <button
+                        className="approve-btn"
+                        onClick={() =>
+                          confirmBooking(booking._id)
+                        }
+                      >
+
+                        Approve
+
+                      </button>
+
+                      <button
+                        className="cancel-btn"
+                        onClick={() =>
+                          cancelBooking(booking._id)
+                        }
+                      >
+
+                        Cancel
+
+                      </button>
+
+                    </>
+
+                  ) : (
+
+                    <span>
+                      Completed
+                    </span>
+
+                  )}
+
+                </td>
+
+              </tr>
+
+            ))
+
+          )}
+
+        </tbody>
+
+      </table>
 
     </div>
+
   );
+
 }
 
 export default AdminDashboard;

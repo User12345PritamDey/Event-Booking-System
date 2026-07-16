@@ -4,97 +4,121 @@ import api from "../services/api";
 import "./Events.css";
 
 function Events() {
+
   const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchEvents();
-  }, []);
+  const fetchEvents = async (query = "") => {
 
-  const fetchEvents = async () => {
     try {
-      const res = await api.get("/event");
+
+      const res = await api.get(`/event?search=${query}`);
+
       setEvents(res.data);
-    } catch (error) {
-      console.log("Error fetching events:", error);
-    } finally {
-      setLoading(false);
+
+    } catch (err) {
+
+      console.log(err);
+
     }
+
   };
 
-  if (loading) {
-    return (
-      <div className="loading">
-        Loading Events...
-      </div>
-    );
-  }
+  useEffect(() => {
+
+    fetchEvents();
+
+  }, []);
+
+  const handleSearch = () => {
+
+    fetchEvents(search);
+
+  };
 
   return (
-    <div className="events-page">
-      <h1>Explore Music Events 🎵</h1>
 
-      <p className="subtitle">
-        Discover concerts, festivals, DJ nights and live performances
-      </p>
+    <div className="events-container">
 
-      <div className="events-container">
+      <h2 className="events-title">
+        🎵 All Events
+      </h2>
+
+      <div className="search-box">
+
+        <input
+          type="text"
+          placeholder="Search event..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <button onClick={handleSearch}>
+          Search
+        </button>
+
+      </div>
+
+      <div className="events-grid">
+
         {events.length === 0 ? (
-          <h2>No Events Available</h2>
+
+          <h2>No Events Found</h2>
+
         ) : (
+
           events.map((event) => (
-            <div className="event-card" key={event._id}>
+
+            <div
+              className="event-card"
+              key={event._id}
+            >
+
               <img
-                src={
-                  event.image ||
-                  "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900"
-                }
+                src={event.image}
                 alt={event.title}
-                onError={(e) => {
-                  e.target.src =
-                    "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900";
-                }}
               />
 
               <div className="event-details">
-                <h2>{event.title}</h2>
+
+                <h2>
+                  {event.title}
+                </h2>
 
                 <p>
-                  <strong>🎤 Category:</strong> {event.category}
+                  {event.description}
                 </p>
 
                 <p>
-                  <strong>📍 Location:</strong> {event.location}
+                  📍 {event.location}
                 </p>
 
                 <p>
-                  <strong>📅 Date:</strong>{" "}
-                  {new Date(event.date).toDateString()}
-                </p>
-
-                <p>
-                  <strong>🎟 Available Seats:</strong>{" "}
-                  {event.availableSeats}
-                </p>
-
-                <p className="price">
-                  ₹ {event.ticketPrice}
+                  📅 {new Date(event.date).toLocaleDateString()}
                 </p>
 
                 <button
-                  onClick={() => navigate(`/event/${event._id}`)}
+                  onClick={() => navigate(`/booking/${event._id}`)}
                 >
-                  View Details
+                  Book Now
                 </button>
+
               </div>
+
             </div>
+
           ))
+
         )}
+
       </div>
+
     </div>
+
   );
+
 }
 
 export default Events;
