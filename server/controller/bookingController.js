@@ -1,7 +1,11 @@
 const Booking = require('../models/Booking.js');
 const Event = require('../models/Event.js');
 const OTP = require('../models/OTP.js');
-const { sendBookingEmail, sendOTPEmail } = require('../utils/emails.js');
+const {
+    sendBookingEmail,
+    sendBookingCancelledEmail,
+    sendOTPEmail
+} = require('../utils/emails.js');
 
 const generateOTP = () =>
     Math.floor(100000 + Math.random() * 900000).toString();
@@ -198,7 +202,9 @@ exports.getMyBookings = async (req, res) => {
 exports.cancelBooking = async (req, res) => {
     try {
 
-        const booking = await Booking.findById(req.params.id);
+        const booking = await Booking.findById(req.params.id)
+    .populate("userId")
+    .populate("eventId");
 
         if (!booking) {
             return res.status(404).json({
@@ -236,7 +242,11 @@ exports.cancelBooking = async (req, res) => {
                 await event.save();
             }
         }
-
+        await sendBookingCancelledEmail(
+    booking.userId.email,
+    booking.userId.name,
+    booking.eventId.title
+);
         res.json({
             message: 'Booking cancelled successfully'
         });

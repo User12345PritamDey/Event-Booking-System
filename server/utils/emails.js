@@ -26,6 +26,39 @@ const sendBookingEmail = async (userEmail, userName, eventTitle) => {
         console.error('Error sending email:', error);
     }
 };
+exports.sendBookingCancelledEmail = async (email, name, eventName) => {
+  try {
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "❌ Event Booking Cancelled",
+      html: `
+        <div style="font-family:Arial;padding:20px">
+          <h2 style="color:#dc2626;">Booking Cancelled</h2>
+
+          <p>Hello <b>${name}</b>,</p>
+
+          <p>Your booking request for</p>
+
+          <h3>${eventName}</h3>
+
+          <p>has been <b style="color:red;">Cancelled</b> by the administrator.</p>
+
+          <p>If you have any questions, please contact the event organizer.</p>
+
+          <br>
+
+          <p>Thank you,</p>
+          <h3>EventBook Team</h3>
+
+        </div>
+      `
+    });
+
+  } catch (err) {
+    console.log(err);
+  }
+};
 const sendOTPEmail = async (userEmail, otp, type) => {//This sendOTPEmail function is designed to handle multiple OTP using type parameter 
     try {
         const title = type === 'account_verification' ? 'Verify your  Account' : ' Booking Verification';

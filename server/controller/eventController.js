@@ -64,3 +64,23 @@ exports.deleteEvent = async (req, res) => {
         res.status(500).json({ message: 'Server Error', error: error.message });
     }
 };
+exports.getEvents = async (req, res) => {
+  try {
+    const { search } = req.query;
+
+    let filter = {};
+
+    if (search) {
+      filter.title = {
+        $regex: search,
+        $options: "i",
+      };
+    }
+
+    const events = await Event.find(filter);
+
+    res.json(events);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
