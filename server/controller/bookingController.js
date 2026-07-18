@@ -1,11 +1,13 @@
 const Booking = require('../models/Booking.js');
 const Event = require('../models/Event.js');
 const OTP = require('../models/OTP.js');
-const {
-    sendBookingEmail,
-    sendBookingCancelledEmail,
-    sendOTPEmail
-} = require('../utils/emails.js');
+const emails = require("../utils/emails.js");
+
+console.log("Emails Export:", emails);
+
+const sendBookingEmail = emails.sendBookingEmail;
+const sendBookingCancelledEmail = emails.sendBookingCancelledEmail;
+const sendOTPEmail = emails.sendOTPEmail;
 
 const generateOTP = () =>
     Math.floor(100000 + Math.random() * 900000).toString();
@@ -199,62 +201,75 @@ exports.getMyBookings = async (req, res) => {
 };
 
 // Cancel Booking
+// Cancel Booking
 exports.cancelBooking = async (req, res) => {
     try {
 
         const booking = await Booking.findById(req.params.id)
-    .populate("userId")
-    .populate("eventId");
+            .populate("userId")
+            .populate("eventId");
 
         if (!booking) {
             return res.status(404).json({
-                message: 'Booking not found'
+                message: "Booking not found"
             });
         }
 
+        // User can cancel only their own booking.
+        // Admin can cancel any booking.
         if (
-            booking.userId.toString() !== req.user.id &&
-            req.user.role !== 'admin'
+            booking.userId._id.toString() !== req.user.id &&
+            req.user.role !== "admin"
         ) {
             return res.status(403).json({
-                message: 'Not authorized'
+                message: "Not authorized"
             });
         }
 
-        if (booking.status === 'cancelled') {
+        if (booking.status === "cancelled") {
             return res.status(400).json({
-                message: 'Already cancelled'
+                message: "Booking already cancelled"
             });
         }
 
-        const wasConfirmed = booking.status === 'confirmed';
+        const wasConfirmed = booking.status === "confirmed";
 
-        booking.status = 'cancelled';
-
+        booking.status = "cancelled";
         await booking.save();
 
-        // Restore seat if booking was confirmed
+        // Restore seat only if booking was confirmed
         if (wasConfirmed) {
-            const event = await Event.findById(booking.eventId);
+
+            const event = await Event.findById(
+                booking.eventId._id
+            );
 
             if (event) {
                 event.availableSeats += 1;
                 await event.save();
             }
+
         }
+
+        // Send cancellation email
         await sendBookingCancelledEmail(
-    booking.userId.email,
-    booking.userId.name,
-    booking.eventId.title
-);
+            booking.userId.email,
+            booking.userId.name,
+            booking.eventId.title
+        );
+
         res.json({
-            message: 'Booking cancelled successfully'
+            message: "Booking cancelled successfully"
         });
 
     } catch (error) {
+
+        console.log(error);
+
         res.status(500).json({
-            message: 'Server Error',
+            message: "Server Error",
             error: error.message
         });
+
     }
 };

@@ -139,3 +139,22 @@
     accent-color: #2563eb;
     cursor: pointer;
 }
+.payment-method label{
+    color:#1f2937 !important;
+}
+
+.payment-method input{
+    accent-color:#2563eb;
+}
+
+.otp-section{
+    color:#111827;
+}
+
+.otp-section h3{
+    color:#111827;
+}
+
+.otp-section p{
+    color:#4b5563;
+}

@@ -49,3 +49,44 @@ font-size:16px;
 .booking-box button:hover{
 background:#dc2626;
 }
+.status{
+font-weight:bold;
+padding:5px 12px;
+border-radius:20px;
+}
+
+.status.pending{
+background:#fff3cd;
+color:#856404;
+}
+
+.status.confirmed{
+background:#d4edda;
+color:#155724;
+}
+
+.status.cancelled{
+background:#f8d7da;
+color:#721c24;
+}
+
+.payment{
+font-weight:bold;
+padding:5px 12px;
+border-radius:20px;
+}
+.payment-option label {
+  color: #111827;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.payment.paid{
+background:#d4edda;
+color:#155724;
+}
+
+.payment.not_paid{
+background:#f8d7da;
+color:#721c24;
+}
