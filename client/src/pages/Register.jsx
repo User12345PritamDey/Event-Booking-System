@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import api from "../services/api";
 import "./Register.css";
 
-export default function Register() {
+function Register() {
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -32,11 +32,13 @@ export default function Register() {
       !form.password ||
       !form.confirmPassword
     ) {
-      return toast.error("Please fill all fields");
+      toast.error("Please fill all fields");
+      return;
     }
 
     if (form.password !== form.confirmPassword) {
-      return toast.error("Passwords do not match");
+      toast.error("Passwords do not match");
+      return;
     }
 
     try {
@@ -48,6 +50,7 @@ export default function Register() {
 
       toast.success(res.data.message);
 
+      // Go to OTP verification page
       navigate("/verify-otp", {
         state: {
           email: form.email,
@@ -55,7 +58,9 @@ export default function Register() {
       });
     } catch (err) {
       toast.error(
-        err.response?.data?.error || "Registration Failed"
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        "Registration Failed"
       );
     }
   };
@@ -78,6 +83,7 @@ export default function Register() {
             placeholder="Full Name"
             value={form.name}
             onChange={handleChange}
+            required
           />
 
           <input
@@ -86,6 +92,7 @@ export default function Register() {
             placeholder="Email Address"
             value={form.email}
             onChange={handleChange}
+            required
           />
 
           <input
@@ -94,6 +101,7 @@ export default function Register() {
             placeholder="Password"
             value={form.password}
             onChange={handleChange}
+            required
           />
 
           <input
@@ -102,16 +110,17 @@ export default function Register() {
             placeholder="Confirm Password"
             value={form.confirmPassword}
             onChange={handleChange}
+            required
           />
 
-          <div className="show-pass">
+          <label className="show-pass">
             <input
               type="checkbox"
               checked={showPassword}
               onChange={() => setShowPassword(!showPassword)}
             />
             <span>Show Password</span>
-          </div>
+          </label>
 
           <button type="submit">
             Create Account
@@ -128,3 +137,5 @@ export default function Register() {
     </div>
   );
 }
+
+export default Register;

@@ -30,7 +30,6 @@ function MyBookings() {
 
   return (
     <div className="my-bookings">
-
       <h1>My Bookings</h1>
 
       {bookings.length === 0 ? (
@@ -38,14 +37,12 @@ function MyBookings() {
       ) : (
         bookings.map((booking) => (
           <div className="booking-box" key={booking._id}>
-
             <img
               src={booking.eventId.image}
               alt={booking.eventId.title}
             />
 
             <div>
-
               <h2>{booking.eventId.title}</h2>
 
               <p>📍 {booking.eventId.location}</p>
@@ -55,38 +52,48 @@ function MyBookings() {
               </p>
 
               <p>
-                💳 Payment :
-                <strong> {booking.paymentMethod}</strong>
-              </p>
-
-              <p>
                 💰 ₹ {booking.amount}
               </p>
 
               <p>
-                Booking :
-                <strong> {booking.status}</strong>
+                Payment :
+                <span className={`payment ${booking.paymentStatus}`}>
+                  {" "}
+                  {booking.paymentStatus === "paid"
+                    ? "🟢 Paid"
+                    : "🔴 Not Paid"}
+                </span>
               </p>
 
               <p>
-                Payment :
-                <strong> {booking.paymentStatus}</strong>
+                Booking :
+                <span className={`status ${booking.status}`}>
+                  {" "}
+                  {booking.status === "pending" && "🟡 Pending"}
+                  {booking.status === "confirmed" && "🟢 Confirmed"}
+                  {booking.status === "cancelled" && "🔴 Cancelled"}
+                </span>
               </p>
 
-              {booking.status !== "cancelled" && (
+              {booking.status === "pending" ? (
                 <button
+                  className="cancel-btn"
                   onClick={() => cancelBooking(booking._id)}
                 >
                   Cancel Booking
                 </button>
+              ) : (
+                <button
+                  className="cancel-btn"
+                  disabled
+                >
+                  Cannot Cancel
+                </button>
               )}
-
             </div>
-
           </div>
         ))
       )}
-
     </div>
   );
 }

@@ -6,7 +6,7 @@
 
 .admin-page h1{
     text-align:center;
-    color:#1e3a8a;
+    color:#1e3a8a !important;
     margin-bottom:30px;
 }
 
@@ -41,6 +41,7 @@
 .stat-card p{
     font-size:17px;
     font-weight:600;
+    color:#1f2937 !important;
 }
 
 .pending h2{
@@ -198,4 +199,50 @@
     width:100%;
 }
 
+}
+.status{
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:20px;
+  font-weight:600;
+  font-size:14px;
+  text-transform:capitalize;
+}
+
+.status.pending{
+  background:#fff3cd;
+  color:#856404;
+}
+
+.status.confirmed{
+  background:#d4edda;
+  color:#155724;
+}
+
+.status.cancelled{
+  background:#f8d7da;
+  color:#721c24;
+}
+.admin-page{
+    color:#1f2937;
+}
+
+.booking-table{
+    color:#1f2937;
+}
+
+.booking-table td{
+    color:#1f2937 !important;
+}
+
+.booking-table th{
+    color:white;
+}
+
+.booking-table tbody tr{
+    color:#1f2937;
+}
+
+.booking-table tbody tr td *{
+    color:inherit;
 }

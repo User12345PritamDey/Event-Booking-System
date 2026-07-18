@@ -147,9 +147,7 @@ function AdminDashboard() {
       </div>
 
       <h2 className="section-title">
-
         📋 Booking Requests
-
       </h2>
 
       <div className="admin-tools">
@@ -219,9 +217,7 @@ function AdminDashboard() {
             <tr>
 
               <td colSpan="7">
-
                 No Booking Requests
-
               </td>
 
             </tr>
@@ -258,7 +254,11 @@ function AdminDashboard() {
                     className={`status ${booking.status}`}
                   >
 
-                    {booking.status}
+                    {booking.status === "pending" && "🟡 Pending"}
+
+                    {booking.status === "confirmed" && "🟢 Confirmed"}
+
+                    {booking.status === "cancelled" && "🔴 Cancelled"}
 
                   </span>
 
