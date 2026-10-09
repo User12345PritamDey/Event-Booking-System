@@ -29,13 +29,13 @@ function Home() {
 
           <h1>
             Experience
-            <span> Live Music </span>
+            <span> Live Event </span>
             Like Never Before
           </h1>
 
           <p className="hero-text">
-            Book concerts, festivals, DJ nights and unforgettable
-            experiences with just one click.
+            Book concerts, festivals, dance shows, art exhibitions, tech events, magic shows and unforgettable experiences with just one click.
+
           </p>
 
           <div className="hero-buttons">

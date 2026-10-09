@@ -14,6 +14,9 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);//This app.use tells the Express that for any request starting with this /api/auth/endpoint ,here endpoint may be login or anything.Basically,if a request URL starts with /api/auth, send it to authRoutes
 app.use('/api/event',eventRoutes);
 app.use('/api/booking',bookingRoutes);
+app.get('/test-server', (req, res) => {
+    res.json({ message: 'THIS IS MY EVENT BOOKING SERVER' });
+});
 //connect to MongoDB
 mongoose.connect(process.env.MONGODB_URL);
 const db = mongoose.connection;

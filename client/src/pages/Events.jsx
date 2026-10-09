@@ -43,7 +43,7 @@ function Events() {
     <div className="events-container">
 
       <h2 className="events-title">
-        🎵 All Events
+        Explore All Events
       </h2>
 
       <div className="search-box">

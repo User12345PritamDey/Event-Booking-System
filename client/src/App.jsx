@@ -15,6 +15,8 @@ import EventDetails from "./pages/EventDetails";
 import Booking from "./pages/Booking";
 import MyBookings from "./pages/MyBookings";
 import AdminDashboard from "./pages/AdminDashboard";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
@@ -38,6 +40,17 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<VerifyOTP />} />
+
+        {/* Forgot Password Routes */}
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
+        />
+
+        <Route
+          path="/reset-password"
+          element={<ResetPassword />}
+        />
 
         {/* Protected Routes */}
         <Route

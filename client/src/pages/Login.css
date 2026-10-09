@@ -1,111 +1,159 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
-.auth-page{
-    min-height:100vh;
-    display:flex;
+.auth-page {
+  min-height: 100vh;
+  display: flex;
 }
 
-.auth-image{
-    flex:1;
+/* Left Image */
+.auth-image {
+  flex: 1;
+  min-height: 100vh;
 }
 
-.auth-image img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
+.auth-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.auth-right{
-    flex:1;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:linear-gradient(135deg,#eef4ff,#ffffff);
+/* Right Section */
+.auth-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #eef4ff, #ffffff);
+  padding: 30px;
 }
 
-.login-box{
-    width:430px;
-    background:white;
-    padding:45px;
-    border-radius:20px;
-    box-shadow:0 20px 45px rgba(0,0,0,.12);
+/* Login / Auth Box */
+.login-box {
+  width: 430px;
+  background: white;
+  padding: 45px;
+  border-radius: 20px;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12);
 }
 
-.login-box h1{
-    font-size:40px;
-    color:#2563eb;
-    margin-bottom:10px;
+.login-box h1 {
+  font-size: 40px;
+  color: #2563eb;
+  margin-bottom: 10px;
 }
 
-.login-box p{
-    color:#666;
-    margin-bottom:25px;
+.login-box p {
+  color: #666;
+  margin-bottom: 25px;
+  line-height: 1.5;
 }
 
-.login-box form{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
+/* Form */
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.login-box input{
-    padding:15px;
-    border-radius:12px;
-    border:1px solid #ddd;
-    font-size:16px;
-    outline:none;
-    transition:.3s;
+.login-box input {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+  outline: none;
+  transition: 0.3s;
 }
 
-.login-box input:focus{
-    border-color:#2563eb;
-    box-shadow:0 0 10px rgba(37,99,235,.2);
+.login-box input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.2);
 }
 
-.login-box button{
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    background:linear-gradient(90deg,#2563eb,#7c3aed);
-    color:white;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.3s;
+/* Forgot Password */
+.forgot-password {
+  align-self: flex-end;
+  margin-top: -8px;
+  margin-bottom: 0;
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
 }
 
-.login-box button:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 20px rgba(37,99,235,.3);
+.forgot-password:hover {
+  text-decoration: underline;
 }
 
-.login-box a{
-    color:#2563eb;
-    text-decoration:none;
-    font-weight:600;
+/* Buttons */
+.login-box button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #2563eb, #7c3aed);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.login-box a:hover{
-    text-decoration:underline;
+.login-box button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
 }
 
-@media(max-width:900px){
+/* Normal Links */
+.login-box a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
+}
 
-    .auth-image{
-        display:none;
-    }
+.login-box a:hover {
+  text-decoration: underline;
+}
 
-    .auth-right{
-        width:100%;
-    }
+/* Register text */
+.login-box > p:last-child {
+  margin-top: 25px;
+  margin-bottom: 0;
+  text-align: center;
+}
 
-    .login-box{
-        width:90%;
-    }
+/* Mobile */
+@media (max-width: 900px) {
+  .auth-image {
+    display: none;
+  }
 
+  .auth-right {
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .login-box {
+    width: 90%;
+    max-width: 430px;
+    padding: 35px 30px;
+  }
+}
+
+@media (max-width: 500px) {
+  .login-box {
+    width: 100%;
+    padding: 30px 22px;
+  }
+
+  .login-box h1 {
+    font-size: 32px;
+  }
 }
