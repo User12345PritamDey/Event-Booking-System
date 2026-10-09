@@ -115,20 +115,31 @@ const sendOTPEmail = async (
   type
 ) => {
   try {
-    const title =
-      type === "account_verification"
-        ? "Verify Your Account"
-        : "Booking Verification OTP";
 
-    const msg =
-      type === "account_verification"
-        ? "Please use the OTP below to verify your account."
-        : "Please use the OTP below to verify your event booking.";
+    let title;
+    let msg;
+
+    if (type === "account_verification") {
+
+      title = "Verify Your Account";
+      msg = "Please use the OTP below to verify your account.";
+
+    } else if (type === "password_reset") {
+
+      title = "Reset Your Password";
+      msg = "Please use the OTP below to reset your password.";
+
+    } else {
+
+      title = "Booking Verification OTP";
+      msg = "Please use the OTP below to verify your event booking.";
+    }
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: userEmail,
       subject: title,
+
       html: `
         <div style="font-family:Arial;text-align:center;padding:20px">
 
@@ -156,6 +167,10 @@ const sendOTPEmail = async (
             <b>5 minutes</b>.
           </p>
 
+          <p style="color:#888;">
+            If you did not request this OTP, please ignore this email.
+          </p>
+
         </div>
       `,
     };
@@ -163,11 +178,13 @@ const sendOTPEmail = async (
     await transporter.sendMail(mailOptions);
 
     console.log(`OTP sent to ${userEmail}`);
+
   } catch (error) {
+
     console.error("Error sending OTP email:", error);
+
   }
 };
-
 // ==========================
 // Export
 // ==========================

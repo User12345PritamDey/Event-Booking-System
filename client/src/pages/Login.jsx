@@ -86,7 +86,9 @@ function Login() {
               value={form.password}
               onChange={handleChange}
             />
-
+            <Link to="/forgot-password" className="forgot-password">
+              Forgot Password?
+            </Link>
             <button type="submit">
               Login
             </button>

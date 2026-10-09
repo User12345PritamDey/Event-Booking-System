@@ -40,7 +40,7 @@ function AdminDashboard() {
         paymentStatus: "paid"
       });
 
-      alert("Booking Confirmed Successfully");
+      alert("Booking Confirmed Successfully✅");
 
       fetchBookings();
 
